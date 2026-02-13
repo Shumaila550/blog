@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevBlog | Professional Developer Blog</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <h1 class="logo">DevBlog</h1>
+
+    <input type="text" id="search" placeholder="Search blog...">
+</header>
+
+<!-- BLOG LIST -->
+<main class="container" id="blogContainer"></main>
+
+<!-- BLOG VIEW -->
+<section id="blogView" class="blog-view hidden">
+    <button onclick="goBack()">← Back</button>
+    <h2 id="blogTitle"></h2>
+    <p id="blogContent"></p>
+
+    <!-- COMMENT SECTION -->
+    <div class="comments">
+        <h3>Comments</h3>
+
+        <div id="commentList"></div>
+
+        <textarea id="commentInput" placeholder="Write a comment..."></textarea>
+        <button onclick="addComment()">Post Comment</button>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 DevBlog | Built for developers with ❤️</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

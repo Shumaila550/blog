@@ -1,87 +1,82 @@
 const blogs = [
-    {
-        id:1,
-        title:"How I Built My First Web App",
-        content:"This is a professional blog post explaining how a developer built their first production-ready web application..."
-    },
-    {
-        id:2,
-        title:"Top JavaScript Tips for Clean Code",
-        content:"In this article we explore clean coding patterns, modular JS structure, and maintainable logic..."
-    },
-    {
-        id:3,
-        title:"Backend vs Frontend — What Should You Learn?",
-        content:"Choosing between backend and frontend depends on your interest in logic, design, and system architecture..."
-    }
+{
+id:1,
+title:"Designing Scalable Web Applications",
+date:"Jan 2026",
+content:"Scalability is not about handling millions of users on day one. It's about designing systems that can grow without breaking..."
+},
+{
+id:2,
+title:"Clean Code Principles Every Developer Should Know",
+date:"Feb 2026",
+content:"Readable code saves time, reduces bugs, and improves collaboration. In this article we explore naming, modularity, and architecture..."
+},
+{
+id:3,
+title:"From Junior to Senior Developer",
+date:"Feb 2026",
+content:"Progressing in your developer career isn't about years — it's about responsibility, decision making, and system thinking..."
+}
 ];
 
-const container = document.getElementById("blogContainer");
-const searchInput = document.getElementById("search");
+const container=document.getElementById("blogContainer");
+const search=document.getElementById("search");
 
-function renderBlogs(list){
-    container.innerHTML="";
-    list.forEach(blog=>{
-        container.innerHTML+=`
-            <div class="card" onclick="openBlog(${blog.id})">
-                <h3>${blog.title}</h3>
-                <p>${blog.content.substring(0,80)}...</p>
-            </div>
-        `;
-    });
+function render(list){
+container.innerHTML="";
+list.forEach(b=>{
+container.innerHTML+=`
+<div class="card" onclick="openBlog(${b.id})">
+<h3>${b.title}</h3>
+<div class="meta">${b.date}</div>
+<p>${b.content.substring(0,110)}...</p>
+</div>`;
+});
 }
 
-renderBlogs(blogs);
+render(blogs);
 
 /* SEARCH */
-searchInput.addEventListener("input",()=>{
-    const term = searchInput.value.toLowerCase();
-    const filtered = blogs.filter(b=>b.title.toLowerCase().includes(term));
-    renderBlogs(filtered);
+search.addEventListener("input",()=>{
+const term=search.value.toLowerCase();
+render(blogs.filter(b=>b.title.toLowerCase().includes(term)));
 });
 
 /* OPEN BLOG */
 function openBlog(id){
-    const blog = blogs.find(b=>b.id===id);
+const blog=blogs.find(b=>b.id===id);
+document.getElementById("blogTitle").innerText=blog.title;
+document.getElementById("blogDate").innerText=blog.date;
+document.getElementById("blogContent").innerText=blog.content;
 
-    document.getElementById("blogTitle").innerText = blog.title;
-    document.getElementById("blogContent").innerText = blog.content;
+container.classList.add("hidden");
+document.getElementById("blogView").classList.remove("hidden");
 
-    document.getElementById("blogView").classList.remove("hidden");
-    container.classList.add("hidden");
-
-    loadComments(id);
-    localStorage.setItem("currentBlog",id);
+loadComments(id);
+localStorage.setItem("blog",id);
 }
 
 function goBack(){
-    document.getElementById("blogView").classList.add("hidden");
-    container.classList.remove("hidden");
+document.getElementById("blogView").classList.add("hidden");
+container.classList.remove("hidden");
 }
 
 /* COMMENTS */
 function loadComments(id){
-    const list = document.getElementById("commentList");
-    list.innerHTML="";
-
-    const comments = JSON.parse(localStorage.getItem("comments_"+id)) || [];
-
-    comments.forEach(c=>{
-        list.innerHTML += `<p>• ${c}</p>`;
-    });
+const list=document.getElementById("commentList");
+list.innerHTML="";
+const comments=JSON.parse(localStorage.getItem("c"+id))||[];
+comments.forEach(c=>list.innerHTML+=`<p>• ${c}</p>`);
 }
 
 function addComment(){
-    const input = document.getElementById("commentInput");
-    const text = input.value.trim();
-    if(!text) return;
+const input=document.getElementById("commentInput");
+if(!input.value.trim())return;
 
-    const id = localStorage.getItem("currentBlog");
-    const comments = JSON.parse(localStorage.getItem("comments_"+id)) || [];
-
-    comments.push(text);
-    localStorage.setItem("comments_"+id,JSON.stringify(comments));
-
-    input.value="";
-    loadComments(id);
+const id=localStorage.getItem("blog");
+const comments=JSON.parse(localStorage.getItem("c"+id))||[];
+comments.push(input.value);
+localStorage.setItem("c"+id,JSON.stringify(comments));
+input.value="";
+loadComments(id);
 }
